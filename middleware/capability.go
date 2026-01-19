@@ -10,12 +10,12 @@ func RequireModule(module string) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims, ok := GetClaims(r.Context())
 			if !ok {
-				http.Error(w, "Payment Required: no claims in context", http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "no claims in context")
 				return
 			}
 
 			if !claims.HasModule(module) {
-				http.Error(w, "Payment Required: module "+module+" not enabled", http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "module "+module+" not enabled")
 				return
 			}
 
@@ -30,12 +30,12 @@ func RequireFeature(feature string) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims, ok := GetClaims(r.Context())
 			if !ok {
-				http.Error(w, "Payment Required: no claims in context", http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "no claims in context")
 				return
 			}
 
 			if !claims.HasFeature(feature) {
-				http.Error(w, "Payment Required: feature "+feature+" not enabled", http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "feature "+feature+" not enabled")
 				return
 			}
 
@@ -50,12 +50,12 @@ func RequireLimit(limitKey string, minValue int) func(http.Handler) http.Handler
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims, ok := GetClaims(r.Context())
 			if !ok {
-				http.Error(w, "Payment Required: no claims in context", http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "no claims in context")
 				return
 			}
 
 			if claims.GetLimit(limitKey) < minValue {
-				http.Error(w, "Payment Required: insufficient limit for "+limitKey, http.StatusPaymentRequired)
+				respondJSON(w, http.StatusPaymentRequired, "insufficient limit for "+limitKey)
 				return
 			}
 

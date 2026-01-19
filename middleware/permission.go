@@ -12,12 +12,12 @@ func RequirePermission(permission string) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims, ok := GetClaims(r.Context())
 			if !ok {
-				http.Error(w, "Forbidden: no claims in context", http.StatusForbidden)
+				respondJSON(w, http.StatusForbidden, "no claims in context")
 				return
 			}
 
 			if !claims.HasPermission(permission) {
-				http.Error(w, "Forbidden: missing permission "+permission, http.StatusForbidden)
+				respondJSON(w, http.StatusForbidden, "missing permission "+permission)
 				return
 			}
 
@@ -32,12 +32,12 @@ func RequireRole(role string) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims, ok := GetClaims(r.Context())
 			if !ok {
-				http.Error(w, "Forbidden: no claims in context", http.StatusForbidden)
+				respondJSON(w, http.StatusForbidden, "no claims in context")
 				return
 			}
 
 			if !claims.HasRole(role) {
-				http.Error(w, "Forbidden: missing role "+role, http.StatusForbidden)
+				respondJSON(w, http.StatusForbidden, "missing role "+role)
 				return
 			}
 

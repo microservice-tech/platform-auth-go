@@ -23,13 +23,13 @@ func (m *JWT) Handler(next http.Handler) http.Handler {
 		authHeader := r.Header.Get("Authorization")
 		token, err := platformauth.ExtractBearerToken(authHeader)
 		if err != nil {
-			http.Error(w, "Unauthorized: "+err.Error(), http.StatusUnauthorized)
+			respondJSON(w, http.StatusUnauthorized, err.Error())
 			return
 		}
 
 		claims, err := m.validator.ValidateToken(token)
 		if err != nil {
-			http.Error(w, "Unauthorized: "+err.Error(), http.StatusUnauthorized)
+			respondJSON(w, http.StatusUnauthorized, "invalid token: "+err.Error())
 			return
 		}
 
