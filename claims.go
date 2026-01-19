@@ -73,10 +73,10 @@ func (c *Claims) HasPermission(permission string) bool {
 // defaultRolePermissions maps roles to their permissions
 // Services can override this with their own mapping
 var defaultRolePermissions = map[string][]string{
-	"admin":       {"can_manage_users", "can_view_users", "can_delete_users", "can_manage_notifications"},
+	"admin":       {"can_manage_users", "can_view_users", "can_delete_users", "can_send_notifications"},
 	"manager":     {"can_view_users"},
 	"user":        {},
-	"super_admin": {"can_manage_users", "can_view_users", "can_delete_users", "can_manage_tenants", "can_manage_notifications"},
+	"super_admin": {"can_manage_users", "can_view_users", "can_delete_users", "can_manage_tenants", "can_send_notifications"},
 }
 
 // SetRolePermissions allows services to customize role-to-permission mapping
